@@ -1,36 +1,11 @@
 <script setup lang="ts">
-import { createDi } from '@/lib/di';
-import { useInfiniteQuery } from '@tanstack/vue-query';
-import { iqo } from './lib/vue-query';
-import { vIntersectionObserver } from '@vueuse/components';
-
-const di = createDi();
-
-const exercisesQuery = useInfiniteQuery(
-  iqo({ ...di.getExetcisesInfinity.lazyQo(), select: (data) => data.pages.flatMap((page) => page.items) })
-);
-
-function onSkeletonIntersect([entity]: IntersectionObserverEntry[]) {
-  if (entity.isIntersecting) {
-    exercisesQuery.fetchNextPage();
-  }
-}
+import { ExercisesList } from '@/components/widgets';
 </script>
 
 <template>
   <div class="mx-auto max-w-[500px]">
-    <ul class="flex flex-col gap-4">
-      <li class="bg-surface min-h-16 rounded-md p-2" v-for="item in exercisesQuery.data.value" :key="item.id">
-        <span class="text-primary bg-surface-soft inline-flex rounded-sm p-1">{{ item.name }}</span>
+    <h1>Exercises</h1>
 
-        <div class="mt-2 text-sm">{{ item.description }}</div>
-      </li>
-
-      <template v-if="exercisesQuery.hasNextPage.value">
-        <li class="bg-surface min-h-16 animate-pulse rounded-md p-2" v-intersection-observer="onSkeletonIntersect"></li>
-
-        <li v-for="_ in 4" class="bg-surface min-h-16 animate-pulse rounded-md p-2"></li>
-      </template>
-    </ul>
+    <ExercisesList />
   </div>
 </template>
