@@ -1,0 +1,30 @@
+@import 'tailwindcss';
+@tailwind utilities;
+
+@theme {
+  --color-background: #121212; /* Глубокий чёрный */
+  --color-background-soft: #1a1a1a; /* Чуть светлее для контраста */
+
+  --color-surface: #242424; /* Цвет карточек и элементов */
+  --color-surface-soft: #2e2e2e; /* Ещё мягче для теней */
+
+  --color-primary: #ff8c00; /* Яркий оранжевый */
+  --color-primary-hover: #ff9800;
+  --color-primary-active: #ffa733;
+
+  --color-typo: #e0e0e0; /* Светло-серый текст */
+  --color-typo-reversed: #121212; /* Светло-серый текст */
+
+  --color-border: #3a3a3a; /* Границы */
+}
+
+@layer utilities {
+  html {
+    @apply h-full;
+    @apply box-border;
+  }
+
+  body {
+    @apply bg-background text-typo;
+  }
+}
