@@ -2,7 +2,7 @@
 import { createDi } from '@/lib/di';
 import { useInfiniteQuery } from '@tanstack/vue-query';
 import { iqo } from './lib/vue-query';
-import { watch } from 'vue';
+import { vIntersectionObserver } from '@vueuse/components';
 
 const di = createDi();
 
@@ -10,19 +10,27 @@ const exercisesQuery = useInfiniteQuery(
   iqo({ ...di.getExetcisesInfinity.lazyQo(), select: (data) => data.pages.flatMap((page) => page.items) })
 );
 
-watch(exercisesQuery.data, (value) => {
-  console.log(value);
-});
+function onSkeletonIntersect([entity]: IntersectionObserverEntry[]) {
+  if (entity.isIntersecting) {
+    exercisesQuery.fetchNextPage();
+  }
+}
 </script>
 
 <template>
-  <div>
+  <div class="mx-auto max-w-[500px]">
     <ul class="flex flex-col gap-4">
-      <li class="bg-surface rounded-sm p-2" v-for="item in exercisesQuery.data.value" :key="item.id">
-        <div class="text-primary">{{ item.name }}</div>
+      <li class="bg-surface min-h-16 rounded-md p-2" v-for="item in exercisesQuery.data.value" :key="item.id">
+        <span class="text-primary bg-surface-soft inline-flex rounded-sm p-1">{{ item.name }}</span>
 
-        <div>{{ item.description }}</div>
+        <div class="mt-2 text-sm">{{ item.description }}</div>
       </li>
+
+      <template v-if="exercisesQuery.hasNextPage.value">
+        <li class="bg-surface min-h-16 animate-pulse rounded-md p-2" v-intersection-observer="onSkeletonIntersect"></li>
+
+        <li v-for="_ in 4" class="bg-surface min-h-16 animate-pulse rounded-md p-2"></li>
+      </template>
     </ul>
   </div>
 </template>

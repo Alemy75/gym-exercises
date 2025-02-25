@@ -28,7 +28,7 @@ export function createGetExercisesInfinity(options: { queryClient: QueryClient; 
   async function queryFn({ pageParam: page }: QueryFunctionContext<Key, Page>) {
     const { data } = await options.httpClient.get<ExercisesResponse>('/exercise', {
       params: {
-        limit: 10,
+        limit: 5,
         page,
       },
     });
