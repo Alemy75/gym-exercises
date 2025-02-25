@@ -1,0 +1,1 @@
+export { createGetExercisesInfinity } from './query';

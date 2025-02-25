@@ -1,22 +1,28 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { createDi } from '@/lib/di';
+import { useInfiniteQuery } from '@tanstack/vue-query';
+import { iqo } from './lib/vue-query';
+import { watch } from 'vue';
+
+const di = createDi();
+
+const exercisesQuery = useInfiniteQuery(
+  iqo({ ...di.getExetcisesInfinity.lazyQo(), select: (data) => data.pages.flatMap((page) => page.items) })
+);
+
+watch(exercisesQuery.data, (value) => {
+  console.log(value);
+});
+</script>
 
 <template>
-  <div class="mx-auto max-w-[560px]">
-    <div class="grid grid-cols-12 grid-rows-12 gap-2">
-      <div class="col-span-3 row-span-2 min-h-[100px] rounded-lg bg-pink-600 p-4"></div>
-      <div class="col-span-3 row-span-2 min-h-[100px] rounded-lg bg-orange-500 p-4"></div>
-      <div class="col-span-6 row-span-2 min-h-[100px] rounded-lg bg-blue-500 p-4"></div>
-      <div class="col-span-4 row-span-2 min-h-[100px] rounded-lg bg-green-400 p-4"></div>
-      <div class="col-span-4 row-span-2 min-h-[100px] rounded-lg bg-violet-400 p-4"></div>
-      <div class="col-span-4 row-span-4 rounded-lg bg-amber-400 p-4"></div>
-      <div class="col-span-8 row-span-2 min-h-[100px] rounded-lg bg-teal-500 p-4"></div>
-      <div class="col-span-3 row-span-2 min-h-[100px] rounded-lg bg-pink-600 p-4"></div>
-      <div class="col-span-3 row-span-2 min-h-[100px] rounded-lg bg-orange-500 p-4"></div>
-      <div class="col-span-6 row-span-2 min-h-[100px] rounded-lg bg-blue-500 p-4"></div>
-      <div class="col-span-4 row-span-2 min-h-[100px] rounded-lg bg-green-400 p-4"></div>
-      <div class="col-span-4 row-span-2 min-h-[100px] rounded-lg bg-violet-400 p-4"></div>
-      <div class="col-span-4 row-span-4 rounded-lg bg-amber-400 p-4"></div>
-      <div class="col-span-8 row-span-2 min-h-[100px] rounded-lg bg-teal-500 p-4"></div>
-    </div>
+  <div>
+    <ul class="flex flex-col gap-4">
+      <li class="bg-surface rounded-sm p-2" v-for="item in exercisesQuery.data.value" :key="item.id">
+        <div class="text-primary">{{ item.name }}</div>
+
+        <div>{{ item.description }}</div>
+      </li>
+    </ul>
   </div>
 </template>
