@@ -1,1 +1,1 @@
-export { default as ExercisesList } from './ExerscizesList.vue';
+export { default as ExercisesList } from './ExercisesList.vue';

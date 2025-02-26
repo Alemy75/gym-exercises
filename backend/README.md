@@ -24,7 +24,7 @@ docker run --name=root -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=gym -p 3306
 
 Exec MySql
 ```
-docker exec -it mysql-container mysql -uroot -p
+docker exec -it mysql-gym mysql -uroot -p
 ```
 
 Create DB

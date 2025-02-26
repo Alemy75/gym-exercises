@@ -1,8 +1,10 @@
+import { MuscleGroup } from '../muscle-group/muscle-group.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  CreateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 @Entity()
@@ -16,6 +18,7 @@ export class Exercise {
   @Column('text')
   description: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  createdAt: Date;
+  @ManyToMany(() => MuscleGroup)
+  @JoinTable()
+  muscleGroups: MuscleGroup[];
 }

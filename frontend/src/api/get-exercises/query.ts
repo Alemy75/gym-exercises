@@ -71,5 +71,9 @@ interface Exercise {
   id: number;
   name: string;
   description: string;
-  createdAt: string;
+  muscleGroups: {
+    id: number;
+    name: string;
+    description: string;
+  }[];
 }

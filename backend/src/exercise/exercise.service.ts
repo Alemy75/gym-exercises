@@ -1,11 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Exercise } from './exercise.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ExerciseService {
   constructor(
-    @Inject('EXERCISE_REPOSITORY')
+    @InjectRepository(Exercise)
     private exerciseRepository: Repository<Exercise>,
   ) {}
 
@@ -16,6 +17,9 @@ export class ExerciseService {
     const [items, total] = await this.exerciseRepository.findAndCount({
       take: limit,
       skip: (page - 1) * limit,
+      relations: {
+        muscleGroups: true,
+      },
     });
 
     return { items, total, pagesCount: Math.ceil(total / limit) };

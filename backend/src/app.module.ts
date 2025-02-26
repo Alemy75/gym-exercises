@@ -1,14 +1,16 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-
 import { ExerciseModule } from './exercise/exercise.module';
-import { DatabaseModule } from './database/database.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { CONNECTION } from './connection';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRoot({
+      ...CONNECTION,
+      autoLoadEntities: true,
+      synchronize: false,
+    }),
     ExerciseModule,
-    DatabaseModule,
   ],
 })
 export class AppModule {}

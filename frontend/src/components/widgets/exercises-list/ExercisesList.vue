@@ -23,8 +23,15 @@ function onSkeletonIntersect([entity]: IntersectionObserverEntry[]) {
       <div
         class="bg-surface border-surface transition-border hover:border-primary-hover min-h-16 cursor-pointer rounded-md border-1 p-2 duration-75"
       >
-        <span class="text-primary bg-surface-soft inline-flex rounded-sm p-1">{{ item.name }}</span>
+        <div class="flex items-center gap-2">
+          <span class="text-primary bg-surface-soft inline-flex rounded-sm p-1">{{ item.name }}</span>
 
+          <span class="flex items-center gap-2">
+            <span v-for="group in item.muscleGroups" class="bg-primary/10 inline-flex rounded-sm p-1">{{
+              group.name
+            }}</span>
+          </span>
+        </div>
         <div class="mt-2 text-sm">{{ item.description }}</div>
       </div>
     </li>
